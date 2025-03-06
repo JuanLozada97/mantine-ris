@@ -11,33 +11,32 @@ import { ActionToggle } from '../ActionToggle/ActionToggle';
 import { useState } from 'react';
 import { LanguagePicker } from '../LanguagePicker/LanguagePicker';
 
-const data = [
-  { label: 'HOMI'},
-  { label: 'San Jose'},
-  { label: 'Medilaser'},
-  { label: 'INDIRA QA'},
-];
+interface Company {
+  label: string;
+}
 
-const user = {
-  name: 'Jane Spoonfighter',
-  email: 'janspoon@fighter.dev',
-  image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png',
-};
+interface User {
+  name: string;
+  email: string;
+  image: string;
+}
 
-export function HeaderMenu() {
+interface HeaderMenuProps {
+  data: Company[];
+  user: User;
+}
+
+export function HeaderMenu(props: HeaderMenuProps) {
+  const { data, user } = props;
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme=== 'dark';
+  const isDarkTheme = colorScheme === 'dark';
   const [openedCompanies, setOpenedCompanies] = useState(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState(data[0]);
-  console.log('colorScheme', colorScheme);
+  const [selectedCompany, setSelectedCompany] = useState<Company>(data[0]);
 
   const itemsCompanies = data.map((item) => (
-    <Menu.Item
-      onClick={() => setSelectedCompany(item)}
-      key={item.label}
-    >
+    <Menu.Item onClick={() => setSelectedCompany(item)} key={item.label}>
       {item.label}
     </Menu.Item>
   ));
@@ -47,8 +46,7 @@ export function HeaderMenu() {
   return (
     <header className={classes.header}>
       <Container size="md">
-        
-        
+
         <div className={classes.inner}>
         <Link href="/">
         <Image
@@ -140,7 +138,8 @@ export function HeaderMenu() {
               <Menu.Item
                 leftSection={
                   <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                }disabled
+                }
+                disabled
               >
                 Preferences
               </Menu.Item>
@@ -165,7 +164,6 @@ export function HeaderMenu() {
               >
                 Logout
               </Menu.Item>
-
             </Menu.Dropdown>
             <Group>
               <ActionToggle />
